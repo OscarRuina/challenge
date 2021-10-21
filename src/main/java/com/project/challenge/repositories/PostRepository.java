@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
 
+    Optional<Post> findById(long idPost);
+
     Optional<Post> findByTitle(String title);
 
     Page<Post> findByCategory(String category, Pageable pageable);

@@ -43,6 +43,7 @@ public class Post {
     private String content;
 
     @Column(name = "image")
+    @NotBlank(message = ErrorMessageConstants.REQUIRED_PARAM_NAME_ERROR_MESSAGE)
     private String image;
 
     @Column(name = "category")
