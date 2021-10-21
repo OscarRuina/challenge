@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -27,6 +28,7 @@ public class UserService implements IUserService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     public User createUser(RequestUserDTO requestUserDTO) {
         log.info("Starting the creation of user with email {} ...", requestUserDTO.getEmail());
         userRepository.findByEmail(requestUserDTO.getEmail()).ifPresent(users -> {
@@ -41,7 +43,7 @@ public class UserService implements IUserService {
         return user;
     }
 
-    @Override
+    @Transactional
     public User updateUser(long idUser, RequestUserDTO requestUserDTO) {
         User user = findById(idUser);
         log.info("Update user with id {} and email {} ", idUser, user.getEmail());
@@ -50,7 +52,7 @@ public class UserService implements IUserService {
         return user;
     }
 
-    @Override
+    @Transactional
     public String deleteUser(long idUser) {
         User user = findById(idUser);
         log.info("Deleting user with id {} and email {}", idUser, user.getEmail());
@@ -59,7 +61,7 @@ public class UserService implements IUserService {
         return "deleted";
     }
 
-    @Override
+    @Transactional(readOnly = true)
     public User findById(long idUser) {
         return userRepository.findById(idUser).orElseThrow(
                 () -> new UserNotFoundException(
@@ -68,10 +70,10 @@ public class UserService implements IUserService {
         );
     }
 
-    @Override
+    @Transactional(readOnly = true)
     public Page<ResponseUserDTO> findUsers(PageRequest pageRequest) {
         Page<User> users = userRepository.findAll(pageRequest);
-        List<ResponseUserDTO> responseUserDTOS = new ArrayList<ResponseUserDTO>();
+        List<ResponseUserDTO> responseUserDTOS = new ArrayList<>();
         users.forEach(u -> responseUserDTOS.add(UserConverter.toResponseUserDTO(u)));
         return new PageImpl<>(responseUserDTOS, users.getPageable(), users.getTotalElements());
     }
