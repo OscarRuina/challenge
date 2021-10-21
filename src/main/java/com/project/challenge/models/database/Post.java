@@ -2,6 +2,7 @@ package com.project.challenge.models.database;
 
 import com.project.challenge.constants.ErrorMessageConstants;
 import java.time.LocalDate;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,7 +21,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
 @Entity
-@Table(name = "post")
+@Table(name = "posts_users")
 @Setter
 @Getter
 @NoArgsConstructor
@@ -30,7 +31,7 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
-    private long id;
+    private long idPost;
 
     @Column(name = "title")
     @NotBlank(message = ErrorMessageConstants.REQUIRED_PARAM_NAME_ERROR_MESSAGE)
@@ -55,7 +56,11 @@ public class Post {
     @CreatedDate
     private LocalDate dateOfCreation;
 
-    @ManyToOne
+    @Column(name = "active")
+    private boolean delete;
+
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH,
+            CascadeType.REFRESH})
     @JoinColumn(name = "idUser")
     private User user;
 

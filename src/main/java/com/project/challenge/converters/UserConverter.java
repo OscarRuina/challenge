@@ -9,9 +9,9 @@ public final class UserConverter {
     }
 
     public static ResponseUserDTO toResponseUserDTO(User user) {
-        ResponseUserDTO dto = new ResponseUserDTO();
-        dto.setId(user.getId());
-        dto.setEmail(user.getEmail());
-        return dto;
+        ResponseUserDTO responseUserDTO = new ResponseUserDTO();
+        responseUserDTO.setId(user.getIdUser());
+        responseUserDTO.setEmail(user.getEmail());
+        return responseUserDTO;
     }
 }

@@ -15,5 +15,16 @@ public class CustomExceptionConstants {
     public static final String USER_NOT_FOUND_CONTROLLER_ERROR_MESSAGE = "User with id %d "
             + "not found";
 
+    /* Email not found errors */
+    public static final String EMAIL_NOT_FOUND_CONTROLLER_ERROR_CODE = "404";
+
+    public static final String EMAIL_NOT_FOUND_CONTROLLER_ERROR_MESSAGE = "Email not found";
+
+    /* Post not found errors */
+    public static final String POST_NOT_FOUND_CONTROLLER_ERROR_CODE = "404";
+
+    public static final String POST_NOT_FOUND_CONTROLLER_ERROR_MESSAGE =
+            "Post with id %d " + "not found";
+
 
 }
