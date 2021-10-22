@@ -7,6 +7,8 @@ import com.project.challenge.models.response.ApplicationResponse;
 import com.project.challenge.services.IPostService;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -71,6 +73,17 @@ public class PostController {
                 iPostService.updatePost(idPost, requestPostDTO));
         log.info("Post successfully updated");
         return new ApplicationResponse<>(responsePostDTO, null);
+    }
+
+    @GetMapping("/posts")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ApplicationResponse<Page<ResponsePostDTO>>> getPosts() {
+        Page<ResponsePostDTO> responsePostDTOS;
+        PageRequest pageRequest = PageRequest.of(0, 25);
+        responsePostDTOS = iPostService.findPosts(pageRequest);
+        ApplicationResponse<Page<ResponsePostDTO>> applicationResponse = new ApplicationResponse<>(
+                responsePostDTOS, null);
+        return ResponseEntity.ok(applicationResponse);
     }
 
 }

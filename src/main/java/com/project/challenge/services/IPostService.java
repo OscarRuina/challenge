@@ -16,6 +16,6 @@ public interface IPostService {
 
     Post findById(long idPost);
 
-    Page<ResponsePostDTO> findPosts(String search, boolean active, PageRequest pageRequest);
+    Page<ResponsePostDTO> findPosts(PageRequest pageRequest);
 
 }

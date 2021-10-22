@@ -78,20 +78,28 @@ public class PostService implements IPostService {
 
     @Transactional(readOnly = true)
     public Post findById(long idPost) {
-        return postRepository.findById(idPost).orElseThrow(
+        Post post = postRepository.findById(idPost).orElseThrow(
                 () -> new PostNotFoundException(
                         CustomExceptionConstants.POST_NOT_FOUND_CONTROLLER_ERROR_CODE,
                         CustomExceptionConstants.POST_NOT_FOUND_CONTROLLER_ERROR_MESSAGE
                 )
         );
+        if (post.isDelete()) {
+            throw new PostNotFoundException(
+                    CustomExceptionConstants.POST_NOT_FOUND_CONTROLLER_ERROR_CODE,
+                    CustomExceptionConstants.POST_NOT_FOUND_CONTROLLER_ERROR_MESSAGE
+            );
+        }
+        return post;
     }
 
     @Transactional(readOnly = true)
-    public Page<ResponsePostDTO> findPosts(String search, boolean active, PageRequest pageRequest) {
-        Page<Post> post = postRepository.findByFilter(search, active,
-                pageRequest);
+    public Page<ResponsePostDTO> findPosts(PageRequest pageRequest) {
+        Page<Post> post = postRepository.findAll(pageRequest);
         List<ResponsePostDTO> responsePostDTOS = new ArrayList<>();
         post.forEach(p -> responsePostDTOS.add(PostConverter.toResponsePostDTO(p)));
         return new PageImpl<>(responsePostDTOS, post.getPageable(), post.getTotalElements());
     }
+
+
 }
